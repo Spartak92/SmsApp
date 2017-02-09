@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>SMS App</title>
+	</head>
+	<body>
+		<div id="app">
+			<form>
+			<label>Please give a phone number</label>
+				<input type="tel" v-model="phone"><br>
+				<label>Please confirm your age</label>
+				<input type="checkbox" v-model="age18"><br>
+				<label>Please confirm agree terms</label>
+				<input type="checkbox" v-model="agreeTerms"><br><br>
+				<button type="button" v-on:click="sendSms" v-bind:disabled="!age18 || !agreeTerms">Send sms</button>
+			</form>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+		<script>
+			new Vue({
+				el: '#app',
+				data: {
+					phone: '',
+					age18: false,
+					agreeTerms: false
+				},
+				methods: {
+					sendSms: function() {
+						$.post('/api/sms-promotion', { phone: this.phone }).then(function(){
+							alert('Sent');
+						}).catch(function(err){
+							alert(err.responseJSON.message);
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
